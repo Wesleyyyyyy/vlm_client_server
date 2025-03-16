@@ -1,0 +1,7 @@
+{
+    "prompt": "Based on the visible road structure, determine if the lanelet layout is a single lane. Output yes only if confidence is above 90 percent.",
+    "classification only": {
+        "labels": ["yes", "no"],
+        "output_format": "label only"
+    }
+}
