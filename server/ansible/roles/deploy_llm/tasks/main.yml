@@ -1,0 +1,34 @@
+---
+# This playbook contains plays that will be run on edna server.
+
+- name: Create project directory
+  ansible.builtin.file:
+    path: "{{ project_location }}"
+    state: directory
+    owner: vlm-server
+    group: data
+    mode: "0750"
+  become: true
+
+- name: Git checkout
+  ansible.builtin.git:
+    repo: "https://github.com/wenjie-ZH/vlm_client_server.git
+    force: True
+    recursive: yes
+    update: yes
+    dest: "{{ project_location }}"
+    version: "{{ deploy_version }}"
+
+- name: Build Docker image
+  docker_image:
+    name: "llm-server-image"
+    build:
+      path: "{{ project_location }}"
+    source: build
+
+- name: Run Docker container
+  docker_container:
+    name: "vlm_server_container"
+    image: "vlm-server-image"
+    state: started
+    recreate: yes

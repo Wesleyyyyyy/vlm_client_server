@@ -21,7 +21,7 @@ models = {
 }
 
 
-def main():
+def run_vlm():
     args = parse_command_line_args()
 
     config_path = Path(args.config)
@@ -31,9 +31,9 @@ def main():
     config = read_config(args)
     model = models[config["General"]["model"]](config)
 
-    prompts = load_prompts("prompts.json", config["General"]["model"])
+    prompts = load_prompts("prompts.json")
     process_prompts(prompts, config, model)
 
 
 if __name__ == '__main__':
-    main()
+    run_vlm()

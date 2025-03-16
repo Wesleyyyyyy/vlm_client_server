@@ -180,12 +180,22 @@ def predict(config, model, save_result=True):
         os.makedirs(results_path, exist_ok=True)
         results_file = os.path.join(results_path, 'results.json')
 
+        if os.path.exists(results_file):
+            with open(results_file, 'r', encoding='utf-8') as file:
+                try:
+                    results = json.load(file)
+                except json.JSONDecodeError:
+                    results = []
+        else:
+            results = []
+
+        results.append(new_data)
+
         with open(results_path, 'w', encoding='utf-8') as file:
             json.dump(results, file, ensure_ascii=False, indent=4)
-        print(f"Results saved to {results_file}.")
 
 
-def load_prompts(file_path, model_name):
+def load_prompts(file_path):
     """ Load prompts JSON file and return prompts """
     with open(file_path, "r") as file:
         prompts_data = json.load(file)
